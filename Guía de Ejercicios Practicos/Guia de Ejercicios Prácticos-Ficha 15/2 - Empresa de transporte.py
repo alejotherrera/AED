@@ -1,4 +1,4 @@
-from utilidades import *
+from Utilidades.utilidades import *
 
 
 def carga():

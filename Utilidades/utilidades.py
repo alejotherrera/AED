@@ -16,9 +16,11 @@ def to_string(inscripto):
     r += "{:<15}".format("CURSO: " + str(inscripto.curso), end="  ")
     r += "{:>15}".format(" TIPO: " + str(inscripto.tipo), end="  ")
     r += "{:>30}".format("IMPORTE: $ " + str(inscripto.importe))
+    print()
     print(r)
 
 
+# Ordenamientos agregado
 def add_in_order(v, nuevo):
     n = len(v)
     pos = n
@@ -58,6 +60,7 @@ def carga(v, n):
     return v
 
 
+# Ordenamientos
 def ordenamientodirecto(v):
     n = len(v)
     for i in range(n - 1):
@@ -66,6 +69,79 @@ def ordenamientodirecto(v):
                 v[i], v[j] = v[j], v[i]
     return v
 
+
+def bubble_sort(v):
+    n = len(v)
+    for i in range(n - 1):
+        ordenado = True
+        for j in range(n - i - 1):
+            if v[j] > v[j + 1]:
+                ordenado = False
+                v[j], v[j + 1] = v[j + 1], v[j]
+        if ordenado:
+            break
+
+
+def insertion_sort(v):
+    n = len(v)
+    for j in range(1, n):
+        y = v[j]
+        k = j - 1
+        while k >= 0 and y < v[k]:
+            v[k + 1] = v[k]
+            k -= 1
+        v[k + 1] = y
+
+
+def shell_sort(v):
+    n = len(v)
+    h = 1
+    while h <= n // 9:
+        h = 3 * h + 1
+    while h > 0:
+        for j in range(h, n):
+            y = v[j]
+            k = j - h
+            while k >= 0 and y < v[k]:
+                v[k + h] = v[k]
+                k -= h
+            v[k + h] = y
+        h //= 3
+
+def heap_sort(v):
+    # ordenamiento Heap Sort
+    n = len(v)
+    # Primera fase: crear el grupo inicial...
+    for i in range(n):
+        e = v[i]
+        s = i
+        f = (s - 1) // 2
+        while s > 0 and v[f] < e:
+            v[s] = v[f]
+            s = f
+            f = (s - 1) // 2
+        v[s] = e
+# Segunda fase: Extraer la raiz, y reordenar el vector y el grupo...
+    for i in range(n-1, 0, -1):
+        valori = v[i]
+        v[i] = v[0]
+        f = 0
+        if i == 1:
+            s = -1
+        else:
+            s = 1
+        if i > 2 and v[2] > v[1]:
+            s = 2
+        while s >= 0 and valori < v[s]:
+            v[f] = v[s]
+            f = s
+            s = 2*f + 1
+            if s + 1 <= i - 1 and v[s] < v[s+1]:
+                s += 1
+                if s > i - 1:
+                    s = -1
+        v[f] = valori
+# ------------------
 
 def validar_pos(a):
     n = a
@@ -109,6 +185,8 @@ def mostrar_archivo(fd):
     m.close()
 
 
+# Busquedas
+
 def busqueda_secuencial(v, nom):
     for i in range(len(v)):
         if v[i].nombre == nom:
@@ -116,8 +194,49 @@ def busqueda_secuencial(v, nom):
     return -1
 
 
+def binary_search(v, x):
+    izq, der = 0, len(v) - 1
+    while izq <= der:
+        c = (izq + der) // 2
+        if x == v[c]:
+            return c
+        if x < v[c]:
+            der = c - 1
+        else:
+            izq = c + 1
+    return -1
+
+
+# ------------------------
+# Fusion de vectores
+def merge(a, b):
+    n, m = len(a), len(b)
+    t = n + m
+    c = t * [0]
+    i = k = j = 0
+    while i < n and j < m:
+        if a[i] < b[j]:
+            c[k] = a[i]
+            i += 1
+        else:
+            c[k] = b[i]
+            j += 1
+        k += 1
+    v, pos = b, j
+    if i < n:
+        v, pos = a, i
+    while pos < len(v):
+        c[k] = v[pos]
+        pos += 1
+        k += 1
+    return c
+
+
+# -----------------------
+
 def extra(cadena):
     letras = "abcdefghijkmñlopqrstuvwxyzaeiouáéíóú"
+    mayus = letras.upper()
     cadena = cadena.lower()
     rango = len(cadena)
     n = 1

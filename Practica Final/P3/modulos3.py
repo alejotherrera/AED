@@ -75,25 +75,13 @@ def punto3(v):
             to_string(vector[i])
 
 
-def crear_archivo(v, fd, x):
+def crear_archivo(v, fd):
     m = open(fd, "wb")
     n = len(v)
     for i in range(n):
         pickle.dump(v[i], m)
     print("Archivo generado!")
     m.close()
-
-
-def generar_auto(servicio, conteo):
-    factura = []
-    for i in range(len(conteo)):
-        tip = servicio[i].tipo
-        mec = servicio[i].mecanismo
-        mon = conteo[mec][tip]
-        if conteo[mec][tip] > 0:
-            m = Factura(mon, tip, mec)
-            factura.append(m)
-    return factura
 
 
 def mostrar_archivo(fd):
@@ -107,7 +95,7 @@ def mostrar_archivo(fd):
     while m.tell() < tamaño:
         a = pickle.load(m)
         if a.monto > 0:
-            to_string(a)
+            to_string2(a)
     m.close()
 
 
@@ -121,7 +109,6 @@ def busqueda_secuencial(v, nom):
 def extra(cadena):
     hay_m = False
     hay_mi = False
-    cont_mi = 0
     pal_con_mi = 0
     for i in range(len(cadena)):
         if cadena[i] != " " and cadena[i] != ".":
@@ -149,26 +136,38 @@ def menu():
     print("8-Analizar cadena con ´mi´ ")
     print("9-Salir")
     sep()
-    op = validar_rango(1, 8, "Ingrese opcion del menu: ")
+    op = validar_rango(1, 9, "Ingrese opcion del menu: ")
     return op
 
 
-def crear_matriz(vector):
-    mostrar_matriz(vector)
-    matriz = [[0] * 25 for f in range(5)]
-    for i in vector:
+def count(servicio):
+    conteo = [[0] * 25 for f in range(5)]
+    for i in servicio:
         c = i.tipo
         f = i.mecanismo
-        matriz[f][c] += i.monto
-    return matriz
+        conteo[f][c] += i.monto
+    return conteo
 
-
-def mostrar_matriz(matriz):
+def mostrar_matriz(servicio, conteo):
     print()
-    for i in matriz:
+    for i in servicio:
         c = i.tipo
         f = i.mecanismo
-        if matriz[f][c] > 0:
-            print('\tEl monto acomulado con tipo de servicio ', c, ' y tipo de mecanismo de pago ', f, ' es: ',
-                  matriz[f][c])
+        if conteo[f][c] > 0:
+            print('\tEl monto acomulado con tipo de servicio ', c, ' y tipo de mecanismo de pago ', f, ' es: ', conteo[f][c])
     print()
+
+
+#Opcion 6
+# crear arreglo y generar archivo
+def generar_automaticamente2(servicio, conteo):
+    factura = []
+    for i in range(len(conteo)):
+        tip = servicio[i].tipo
+        mec = servicio[i].mecanismo
+        mon = conteo[mec][tip]
+        if conteo[mec][tip] > 0:
+            m = Factura(mon, tip, mec)
+            factura.append(m)
+    return factura
+
