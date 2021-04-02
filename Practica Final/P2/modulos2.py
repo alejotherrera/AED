@@ -107,11 +107,29 @@ def busqueda_secuencial2(v, nom):
     return -1
 
 
+def crear_matriz(v):
+    conteo = [[0] * 30 for i in range(10)]
+    for i in v:
+        c = i.tipo
+        f = i.avales
+        conteo[f][c] += i.monto
+    return conteo
+
+def mostrar_matriz(conteo,v,p):
+    print()
+    for i in v:
+        c = i.tipo
+        f = i.avales
+        if conteo[f][c] > p:
+            print("El monto acumulado con tipo ",c, " y avales ",f, " es: $",conteo[f][c])
+        print()
+
+
+
 def crear_archivo(v, fd):
     m = open(fd, "wb")
     n = len(v)
     for i in range(n):
-
         a = len(v[i].descripcion)
         if a <= 25 and v[i].tipo != 10 and v[i].tipo != 15:
             pickle.dump(v[i], m)
@@ -161,3 +179,85 @@ def menu():
     sep()
     op = validar_rango(1, 9, "Ingrese opcion del menu: ")
     return op
+
+
+def principal():
+    cadena = ""
+    v = []
+    fd = "vector.dat"
+    op = -1
+    while op != 9:
+        op = menu()
+        if op == 1:
+            n = validar_pos(0)
+            v = carga(v, n)
+            sep()
+        elif op == 2:
+            if len(v) != 0:
+                mostrar(v)
+                sep()
+            else:
+                print("Debe cargar los datos primero(opcion1)")
+                sep()
+        elif op == 3:
+            if len(v) != 0:
+                nom = input("Ingrese nombre del director a buscar: ")
+                cadena = busqueda_secuencial(v, nom)
+                if cadena != "No existe":
+                    print("Nombre encontrado con exito...")
+                    print(cadena)
+                else:
+                    print("No existe")
+                sep()
+            else:
+                print("Debe cargar los datos primero(opcion1)")
+                sep()
+        elif op == 4:
+            if len(v) != 0:
+                nom = (input("Ingrese id a buscar: "))
+                res = busqueda_secuencial2(v, nom)
+                if res != -1:
+                    to_string(v[res])
+                else:
+                    agregar_medicamento(v, nom)
+                    print("Identificacion agregada con exito!!")
+                sep()
+            else:
+                print("Debe cargar los datos primero(opcion1)")
+                sep()
+        elif op == 5:
+            if len(v) != 0:
+                conteo = crear_matriz(v)
+                p = int(input("Ingrese valor a filtrar: "))
+                mostrar_matriz(conteo,v,p)
+                sep()
+            else:
+                print("Debe cargar los datos primero(opcion1)")
+                sep()
+        elif op == 6:
+            if len(v) != 0:
+                crear_archivo(v, fd)
+                sep()
+            else:
+                print("Debe cargar los datos primero(opcion1)")
+                sep()
+        elif op == 7:
+            if len(v) != 0:
+                mostrar_archivo(fd)
+                sep()
+            else:
+                print("Debe cargar los datos primero(opcion1)")
+                sep()
+        elif op == 8:
+            if len(cadena) != 0:
+                print("Cadena analizada!")
+                analisis_cadena(cadena)
+            else:
+                print("Debe generar la cadena en el punto 3")
+            sep()
+        elif op == 9:
+            print("Gracias por utilizar el programa!")
+
+
+if __name__ == '__main__':
+    principal()

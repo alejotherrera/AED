@@ -1,24 +1,23 @@
 # Principal
+
 from modulos3 import *
+
+
+# Menu de opciones
 
 
 def principal():
     v = []
-    fd = "vector.dat"
+    fd = "servicios.dat"
     op = -1
-    carga = False
-    carga_2 = False
     while op != 9:
         op = menu()
         if op == 1:
-            n = validar_pos(0)
-            v = carga_vector(v,n)
-            carga = True
-            input("Vector Generado! Presiona cualquier tecla para continuar!")
+            n = int(input("Ingrese cantidad de servicios a cargar: "))
+            v = carga(v, n)
             sep()
         elif op == 2:
             if len(v) != 0:
-                v = ordenamientodirecto(v)
                 mostrar(v)
                 sep()
             else:
@@ -33,51 +32,43 @@ def principal():
                 sep()
         elif op == 4:
             if len(v) != 0:
-                id = int(input("Ingrese id a buscar: "))
-                res = busqueda_secuencial(v,id)
-                if res != -1:
-                    print("Id encontrado con exito!")
+                c = int(input("Ingrese id a buscar: "))
+                res = busqueda_secuencial(v, c)
+                if res != 0:
                     to_string(v[res])
                 else:
-                    print("El id ingresado no se ha encontrado")
+                    print("No existe el id buscado...")
                 sep()
             else:
                 print("Debe cargar los datos primero(opcion1)")
                 sep()
         elif op == 5:
             if len(v) != 0:
-                conteo = count(v)
-                mostrar_matriz(v, conteo)
+                matriz = crear_matriz(v)
+                mostrar_matriz(matriz, v)
                 sep()
             else:
                 print("Debe cargar los datos primero(opcion1)")
                 sep()
         elif op == 6:
-            if len(v) != 0:
-                factura = generar_automaticamente2(v, conteo)
-                crear_archivo(factura,fd)
-                carga_2 = True
-                sep()
+            if len(matriz) != 0:
+                generar_archivofactura(matriz, v, fd)
             else:
-                print("Debe cargar los datos primero(opcion1)")
-                sep()
+                print("Debe generar la matriz en el punto 5")
             sep()
         elif op == 7:
-            if len(v) != 0:
-                mostrar_archivo(fd)
-                sep()
-            else:
-                print("Debe cargar los datos primero(opcion1)")
-                sep()
+            mostrar_archivo(fd)
             sep()
         elif op == 8:
-            cadena = input("Ingrese cadena: ")
-            extra(cadena)
+            cadena = input("Ingrese la cadena a analizar: ")
+            cant_pal = analisis_cadena(cadena)
+            print("La cantidad de palabras en la cadena con mi es: ", cant_pal)
             sep()
         elif op == 9:
             print("Gracias por utilizar el programa!")
             sep()
 
 
+# Script princial...
 if __name__ == '__main__':
     principal()

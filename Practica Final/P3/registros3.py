@@ -1,13 +1,13 @@
 #Herrera Alejo
 
 class Servicio:
-    def __init__(self, id, descrip, nom, mon, tip, mec):
+    def __init__(self, id, descrip, nombre, monto, tipo, mecanismo):
         self.id = id
         self.descripcion = descrip
-        self.nombre = nom
-        self.monto = mon
-        self.tipo = tip
-        self.mecanismo = mec
+        self.nombre = nombre
+        self.monto = monto
+        self.tipo = tipo
+        self.mecanismo = mecanismo
 
 def to_string(servicio):
     r = ''

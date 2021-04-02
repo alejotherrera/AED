@@ -12,10 +12,12 @@ class Medicamento:
 
 def to_string(Medicamento):
     r = ""
-    r += "{:<20}".format("NUMERO DE ID: " + str(Medicamento.id), end="  ")
-    r += "{:<30}".format("  descripcion: " + str(Medicamento.descripcion), end="  ")
-    r += "{:<30}".format("nombre: " + str(Medicamento.nombre), end="  ")
-    r += "{:>15}".format(" monto: $" + str(Medicamento.monto), end="  ")
-    r += "{:>30}".format("tipo:  " + str(Medicamento.tipo), end="  ")
-    r += "{:>30}".format("avales:  " + str(Medicamento.avales))
+    r += "{:<20}".format("ID: " + str(Medicamento.id), end="  ")
+    r += "{:<30}".format("  Descripcion: " + str(Medicamento.descripcion), end="  ")
+    r += "{:<30}".format(" Nombre: " + str(Medicamento.nombre), end="  ")
+    r += "{:>15}".format(" Monto: $" + str(Medicamento.monto), end="  ")
+    r += "{:>30}".format(" Tipo:  " + str(Medicamento.tipo), end="  ")
+    r += "{:>30}".format(" Avales:  " + str(Medicamento.avales))
+    print()
     print(r)
+

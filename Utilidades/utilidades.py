@@ -1,4 +1,4 @@
-import random, os, pickle
+import random, os, pickle, io
 
 
 class Obra:
@@ -40,7 +40,7 @@ def add_in_order(v, nuevo):
 
 
 def sep():
-    print("-" * 30)
+    print("=" * 30)
 
 
 def mostrar(v):
@@ -50,13 +50,10 @@ def mostrar(v):
 
 
 def carga(v, n):
-    nombres = ("cobre", "plomo", "zinc", "estaño", "hierro", "manganeso", "molibdeno", "cobalto",
-               "tungsteno", "titanio", "cromo", "oro", "plata", "platino", "plutonio", "uranio", "radio",
-               "torio", "mairene", "potasio ", "yodo  ", "carbonato ", "cloruro", "sulfato",
-               "dolomita")
     for i in range(n):
         new = new
         v.append(new)
+
     return v
 
 
@@ -108,6 +105,7 @@ def shell_sort(v):
             v[k + h] = y
         h //= 3
 
+
 def heap_sort(v):
     # ordenamiento Heap Sort
     n = len(v)
@@ -121,8 +119,8 @@ def heap_sort(v):
             s = f
             f = (s - 1) // 2
         v[s] = e
-# Segunda fase: Extraer la raiz, y reordenar el vector y el grupo...
-    for i in range(n-1, 0, -1):
+    # Segunda fase: Extraer la raiz, y reordenar el vector y el grupo...
+    for i in range(n - 1, 0, -1):
         valori = v[i]
         v[i] = v[0]
         f = 0
@@ -135,13 +133,32 @@ def heap_sort(v):
         while s >= 0 and valori < v[s]:
             v[f] = v[s]
             f = s
-            s = 2*f + 1
-            if s + 1 <= i - 1 and v[s] < v[s+1]:
+            s = 2 * f + 1
+            if s + 1 <= i - 1 and v[s] < v[s + 1]:
                 s += 1
                 if s > i - 1:
                     s = -1
         v[f] = valori
+
+
 # ------------------
+
+# Validaciones
+def validar_entre(desde, hasta, mensaje):
+    num = int(input(mensaje))
+    while num < desde or num > hasta:
+        print('Inválido! Debe ser un valor entre', desde, 'y', hasta)
+        num = int(input(mensaje))
+    return num
+
+
+def validar_monto(mensaje):
+    monto = float(input(mensaje))
+    while monto < 0:
+        print('Inválido! Debe ser un valor positivo.')
+        monto = float(input(mensaje))
+    return monto
+
 
 def validar_pos(a):
     n = a
@@ -178,6 +195,7 @@ def mostrar_archivo(fd):
 
     m = open(fd, "rb")
     tamaño = os.path.getsize(fd)
+
     print("Datos del archivo: ")
     while m.tell() < tamaño:
         a = pickle.load(m)
@@ -185,7 +203,7 @@ def mostrar_archivo(fd):
     m.close()
 
 
-# Busquedas
+# Busquedas--------------------
 
 def busqueda_secuencial(v, nom):
     for i in range(len(v)):
@@ -206,6 +224,8 @@ def binary_search(v, x):
             izq = c + 1
     return -1
 
+
+# ------------------------
 
 # ------------------------
 # Fusion de vectores
@@ -260,6 +280,93 @@ def menu():
     return op
 
 
+# Manipulacion de archivos
+
+# Funcion Buscar
+def buscar(fd, m, patente):
+    t = os.path.getsize(fd)
+
+    fp_inicial = m.tell()
+    m.seek(0, io.SEEK_SET)
+
+    posicion = -1
+    while m.tell() < t:
+        fp = m.tell()
+        auto = pickle.load(m)
+        if auto.patente == patente:
+            posicion = fp
+            break
+
+    m.seek(fp_inicial, io.SEEK_SET)
+    return posicion
+
+
+def alta(fd):
+    m = open(fd, "a+b")
+    patente = input(": ")
+    pos = buscar(fd, m, patente)
+    if pos == -1:
+        modelo = int(input("Modelo: "))
+        aut = Clase()
+        pickle.dump(aut, m)
+        m.flush()
+        print("Registros grabado en el archivo...")
+    else:
+        print("Patente repetida... alta rechazada")
+
+
+def modificacion(fd):
+    if not os.path.exists(fd):
+        print("El archivo", fd, "no existe... use la opcion 1 para crearlo y grabarle registros...")
+        print()
+        return
+    m = open(fd, "r+b")
+
+    patente = input("Patente del automovil a modificar su estado(carge 0 para salir): ")
+    while patente != "0":
+        pos = buscar(fd, m, patente)
+        if pos != -1:
+            m.seek(pos, io.SEEK_SET)
+            aut = pickle.load(m)
+
+            print()
+            print("El registro actualmente grabado es: ")
+            to_string(aut)
+
+            if aut.estado == 0:
+                print("El automovil ya fue vendido")
+            else:
+                aut.estado = 0
+                m.seek(pos, io.SEEK_SET)
+                pickle.dump(aut, m)
+                print()
+                print("EL automovil cambio su estado a vendido...")
+        else:
+            print("Ese registro no existe en el archivo...")
+        input("Presione para seguir")
+        patente = input("Otra patente a modificar su estado(cargue 0 para salir): ")
+
+    m.close()
+
+
+def listado_completo(fd):
+    if not os.path.exists(fd):
+        print("El archivo", fd, "no existe... use la opcion 1 para crearlo y grabarle registros...")
+        print()
+        return
+    tbm = os.path.getsize(fd)
+    m = open(fd, "rb")
+    print("Listado general de automoviles registrados: ")
+    while m.tell() < tbm:
+        aut = pickle.load(m)
+        to_string(aut)
+
+    m.close()
+
+    print()
+    input("Presione para seguir...")
+
+
 def principal():
     v = []
     fd = "vector.dat"
@@ -271,34 +378,29 @@ def principal():
             sep()
         elif op == 2:
             if len(v) != 0:
-
-                sep()
+                pass
             else:
                 print("Debe cargar los datos primero(opcion1)")
-                sep()
+            sep()
         elif op == 3:
             if len(v) != 0:
-
-                sep()
+                pass
             else:
                 print("Debe cargar los datos primero(opcion1)")
-                sep()
+            sep()
         elif op == 4:
             if len(v) != 0:
-
-                sep()
+                pass
             else:
                 print("Debe cargar los datos primero(opcion1)")
-                sep()
+            sep()
         elif op == 5:
             if len(v) != 0:
-
-                sep()
+                pass
             else:
                 print("Debe cargar los datos primero(opcion1)")
-                sep()
+            sep()
         elif op == 6:
-
             sep()
         elif op == 7:
             sep()
@@ -307,5 +409,6 @@ def principal():
             sep()
 
 
+# Script princial...
 if __name__ == '__main__':
     principal()
