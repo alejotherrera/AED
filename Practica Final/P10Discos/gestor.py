@@ -4,7 +4,7 @@ import random, os, pickle, io
 
 # Visual
 def sep():
-    print("=" * 30)
+    print("=" * 50)
 
 
 # Validaciones

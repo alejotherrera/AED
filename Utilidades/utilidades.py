@@ -1,21 +1,19 @@
 import random, os, pickle, io
 
-
 class Obra:
-    def __init__(self, id, nombre, pais, precio):
+    def __init__(self, id, servicio, pais, precio):
         self.id = id
-        self.nombre = nombre
+        self.servicio = servicio
         self.pais = pais
         self.precio = precio
-
 
 def to_string(inscripto):
     r = ""
     r += "{:<20}".format("NUMERO DE DNI: " + str(inscripto.dni), end="  ")
-    r += "{:<20}".format("  NOMBRE: " + str(inscripto.nombre), end="  ")
-    r += "{:<15}".format("CURSO: " + str(inscripto.curso), end="  ")
-    r += "{:>15}".format(" TIPO: " + str(inscripto.tipo), end="  ")
-    r += "{:>30}".format("IMPORTE: $ " + str(inscripto.importe))
+    r += "{:<30}".format("  descripciones: " + str(inscripto.nombre), end="  ")
+    r += "{:<30}".format("CURSO: " + str(inscripto.curso), end="  ")
+    r += "{:<30}".format(" TIPO: " + str(inscripto.tipo), end="  ")
+    r += "{:<30}".format("IMPORTE: $ " + str(inscripto.importe))
     print()
     print(r)
 
