@@ -75,7 +75,7 @@ def bubble_sort(v):
                 v[j], v[j + 1] = v[j + 1], v[j]
         if ordenado:
             break
-
+    return v
 
 def insertion_sort(v):
     n = len(v)
@@ -86,7 +86,7 @@ def insertion_sort(v):
             v[k + 1] = v[k]
             k -= 1
         v[k + 1] = y
-
+    return v
 
 def shell_sort(v):
     n = len(v)
@@ -102,6 +102,7 @@ def shell_sort(v):
                 k -= h
             v[k + h] = y
         h //= 3
+    return v
 
 
 def heap_sort(v):
@@ -142,14 +143,6 @@ def heap_sort(v):
 # ------------------
 
 # Validaciones
-def validar_entre(desde, hasta, mensaje):
-    num = int(input(mensaje))
-    while num < desde or num > hasta:
-        print('Inválido! Debe ser un valor entre', desde, 'y', hasta)
-        num = int(input(mensaje))
-    return num
-
-
 def validar_monto(mensaje):
     monto = float(input(mensaje))
     while monto < 0:
@@ -175,7 +168,7 @@ def validar_rango(inf, sup, mensaje):
             print("Error... opcion invalida, ingrese entre " + str(inf) + " y " + str(sup))
     return n
 
-
+# Manipulacion de archivos
 def crear_archivo(v, fd, x):
     m = open(fd, "wb")
     n = len(v)
@@ -201,7 +194,7 @@ def mostrar_archivo(fd):
     m.close()
 
 
-# Busquedas--------------------
+# Busquedas----------------
 
 def busqueda_secuencial(v, nom):
     for i in range(len(v)):
@@ -221,8 +214,6 @@ def binary_search(v, x):
         else:
             izq = c + 1
     return -1
-
-
 # ------------------------
 
 # ------------------------
@@ -294,7 +285,6 @@ def buscar(fd, m, patente):
         if auto.patente == patente:
             posicion = fp
             break
-
     m.seek(fp_inicial, io.SEEK_SET)
     return posicion
 
@@ -305,7 +295,7 @@ def alta(fd):
     pos = buscar(fd, m, patente)
     if pos == -1:
         modelo = int(input("Modelo: "))
-        aut = Clase()
+        aut = ClaseParaCrearElObjeto()
         pickle.dump(aut, m)
         m.flush()
         print("Registros grabado en el archivo...")
