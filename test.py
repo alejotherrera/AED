@@ -26,8 +26,8 @@ def test():
         else:
             repeat = False
     print("Gracias por utilizar el programa")
-    print("Alumnos aprobados: ", cont_apr)
-    print("Alumnos desaprobados: ", cont_desr)
+    print("La cantidad de Alumnos aprobados: ", cont_apr)
+    print("La cantidad de Alumnos desaprobados: ", cont_desr)
 
 
 if __name__ == '__main__':
