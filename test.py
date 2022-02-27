@@ -1,34 +1,18 @@
-def sep():
-    print("=" * 30)
-
-
-def test():
-    cont_apr = suma = cont_desr = 0
-    n = input("Desea ingresar un alumno? s/n: ")
-    print("=" * 30)
-    if n == "s":
-        repeat = True
-    else:
-        repeat = False
-    while repeat == True:
-        suma = 0
-        for i in range(5):
-            nota = int(input("Ingrese nota del ejercicio: "))
-            suma += nota
-        if suma >= 60:
-            cont_apr += 1
+def principal():
+    cadena = input("Ingrese la cadena: ")
+    cont = cumple = 0
+    letras = "abcdefghijkmñlopqrstuvwxyzaeiouáéíóú"
+    cadena = cadena.lower()
+    for i in cadena:
+        if i != " " and i != ".":
+            if i in letras:
+                cont += 1
         else:
-            cont_desr += 1
-        print("=" * 30)
-        n = input("Desea ingresar otra alumno? s/n: ")
-        if n == "s":
-            repeat = True
-        else:
-            repeat = False
-    print("Gracias por utilizar el programa")
-    print("Alumnos aprobados: ", cont_apr)
-    print("Alumnos desaprobados: ", cont_desr)
+            if cont > 4:
+                cumple += 1
+            cont = 0
+    print(cumple)
 
-
+# Script princial...
 if __name__ == '__main__':
-    test()
+    principal()

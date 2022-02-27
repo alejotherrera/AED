@@ -64,6 +64,23 @@ def ordenamientodirecto(v):
                 v[i], v[j] = v[j], v[i]
     return v
 
+def crear_matriz(v):
+    conteo = [[0] * 30 for i in range(10)]
+    for i in v:
+        c = i.tipo
+        f = i.avales
+        conteo[f][c] += i.monto
+    return conteo
+
+def mostrar_matriz(conteo,v,p):
+    print()
+    for i in v:
+        c = i.tipo
+        f = i.avales
+        if conteo[f][c] > p:
+            print("El monto acumulado con tipo ",c, " y avales ",f, " es: $",conteo[f][c])
+        print()
+
 
 def bubble_sort(v):
     n = len(v)
